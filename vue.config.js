@@ -1,6 +1,8 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+const targetUrl = 'http://39.98.123.211:8170'
+const targetUrl2 = 'http://39.98.123.211:8510'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -36,7 +38,21 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      '/api-admin': {
+        target: targetUrl,
+        pathRewrite: {
+          '/api-admin': ''
+        }
+      },
+      '/api': {
+        target: targetUrl2,
+        pathRewrite: {
+          '/api': ''
+        }
+      }
+    }
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

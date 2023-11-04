@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
@@ -28,9 +29,17 @@ const mutations = {
 }
 
 const actions = {
-  // user login
+  // 登录
   login({ commit }, userInfo) {
     const { username, password } = userInfo
+    // let result = login({ username: username.trim(), password });
+    // if (result.code === 200) {
+    //   commit('SET_TOKEN', result.data.token);
+    //   setToken(result.data.token);
+    //   return 'ok';
+    // } else {
+    //   return new Promise.reject(new Error('fail'));
+    // }
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response

@@ -51,16 +51,51 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/product',
+    component: Layout,
+    redirect: '/product/tradeMark',
+    name: 'Product',
+    meta: {
+      title: '商品管理',
+      icon: 'el-icon-goods'
+    },
+    children: [
+      {
+        path: 'tradeMark',
+        component: () => import('@/views/product/tradeMark/index'), // Parent router-view
+        name: 'TradeMark',
+        meta: { title: '品牌管理' }
+      },
+      {
+        path: 'attr',
+        component: () => import('@/views/product/attr/index'),
+        name: 'Attr',
+        meta: { title: '售卖属性' }
+      },
+      {
+        path: 'spu',
+        component: () => import('@/views/product/spu/index'),
+        name: 'Spu',
+        meta: { title: 'Spu管理' }
+      },
+      {
+        path: 'sku',
+        component: () => import('@/views/product/sku/index'), // Parent router-view
+        name: 'Sku',
+        meta: { title: 'Sku管理' }
+      }
+    ]
+  },
   {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'el-icon-s-help' },
+    meta: { title: '例子', icon: 'el-icon-s-help' },
     children: [
       {
         path: 'table',
@@ -85,7 +120,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        meta: { title: '表单', icon: 'form' }
       }
     ]
   },
@@ -149,16 +184,16 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

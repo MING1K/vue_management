@@ -22,6 +22,25 @@
   left: 0;
   position: relative;
   margin: 0 auto;
+
+  .el-dialog__header {
+    .el-dialog__title {
+      margin-left: 10px;
+      position: relative;
+      &::before {
+        content: "";
+        background: $primary;
+        position: absolute;
+        height: 100%;
+        line-height: 1;
+        width: 3px;
+        border-radius: 3px;
+        left: -7px;
+        top: 0;
+      }
+    }
+  }
+
 }
 
 // refine element ui upload
@@ -46,4 +65,66 @@
 // to fix el-date-picker css style
 .el-range-separator {
   box-sizing: content-box;
+}
+
+.el-table {
+
+  th.gutter,
+  colgroup col[name='gutter'] {
+    // display: none !important;
+    width: 8px !important;
+  }
+
+  .el-table__body {
+    width: 100% !important;
+  }
+
+  ::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 8px !important;
+    /*高宽分别对应横竖滚动条的尺寸*/
+    height: 8px !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 8px;
+    background: rgba(64, 144, 255, 0.3);
+  }
+
+  ::-webkit-scrollbar-track {
+    /*滚动条里面轨道*/
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0);
+    margin: 0;
+  }
+}
+
+.select-table {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .el-table {
+    flex: 1;
+  }
+}
+
+.el-form {
+  .form-row {
+    display: flex;
+
+    .el-form-item {
+      flex: 1;
+
+      .el-select {
+        width: 100%;
+      }
+    }
+  }
+
+  .commit-row {
+    display: flex;
+    justify-content: center;
+  }
 }
