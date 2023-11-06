@@ -8,7 +8,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'vue Admin Template' // page title
+const name = defaultSettings.title || '后台管理系统' // page title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -51,8 +51,10 @@ module.exports = {
           '/api': ''
         }
       }
-    }
-    // before: require('./mock/mock-server.js')
+    },
+    // 开启mock数据
+    // 这里有before和after两种方式，但是有后端接口的话，改用after更好
+    after: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

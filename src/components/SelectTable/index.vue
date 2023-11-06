@@ -24,7 +24,7 @@
       <el-table-column
         v-if="showNo"
         type="index"
-        label="序号"
+        :label="showNoString"
         width="100"
         align="center"
       >
@@ -140,9 +140,14 @@ export default {
       type: Boolean,
       default: false
     },
+    // 序号列
     showNo: {
       type: Boolean,
       default: false
+    },
+    showNoString: {
+      type: String,
+      default: '序号'
     },
     rowKey: {
       type: String,
