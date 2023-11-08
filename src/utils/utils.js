@@ -270,6 +270,30 @@ const utils = {
       }
     })
     return diff
+  },
+  // 先序遍历
+  treeBeforeForeach(tree, func) {
+    tree.forEach(data => {
+      data.children && this.treeBeforeForeach(data.children, func) // 遍历子树
+      func(data)
+    })
+  },
+  // 后序遍历
+  treeAfterForeach(tree, func) {
+    tree.forEach(data => {
+      func(data)
+      data.children && this.treeAfterForeach(data.children, func) // 遍历子树
+    })
+  },
+  tree2Array(obj, res = []) { // 默认初始结果数组为[]
+    res.push(obj) // 当前元素入栈
+    // 若元素包含children，则遍历children并递归调用使每一个子元素入栈
+    if (obj.children && obj.children.length) {
+      for (const item of obj.children) {
+        this.tree2Array(item, res)
+      }
+    }
+    return res
   }
 }
 export default utils

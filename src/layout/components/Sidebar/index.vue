@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
@@ -30,8 +30,11 @@ export default {
     ...mapGetters([
       'sidebar'
     ]),
+    ...mapState('user', ['allRoutes']),
     routes() {
-      return this.$router.options.routes
+      // sidebar遍历的应该是过滤后的路由
+      // return this.$router.options.routes
+      return this.allRoutes
     },
     activeMenu() {
       const route = this.$route
