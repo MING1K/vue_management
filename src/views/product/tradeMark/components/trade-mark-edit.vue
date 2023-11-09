@@ -124,7 +124,6 @@ export default {
     handleSave() {
       this.$refs.form.validate(async(valid) => {
         if (valid) {
-          console.log('ok')
           if (this.handleType === 'edit') {
             let data = utils.clone(this.form)
             this.$API.product.updateTradeMark(data).then((res) => {
@@ -134,7 +133,6 @@ export default {
           } else if (this.handleType === 'add') {
             let data = utils.clone(this.form)
             this.$API.product.addTradeMark(data).then((res) => {
-              console.log(res)
               this.$message.success('增加编辑品牌成功！')
               this.handleClose('add')
             })

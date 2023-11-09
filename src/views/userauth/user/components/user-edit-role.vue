@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import utils from '@/utils/utils'
 export default {
   components: {},
   props: {
@@ -154,7 +153,6 @@ export default {
     // 获取用户角色信息
     async initUserRoles(id) {
       await this.$API.user.getRoles(id).then(res => {
-        console.log(res)
         this.rolesList = res.data.allRolesList
         this.checkedRoles = res.data.assignRoles.map(item => {
           return item.id

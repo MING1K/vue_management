@@ -53,7 +53,6 @@ export default {
     files: {
       immediate: true,
       handler(newVal) {
-        console.log('imageList, fileList', this.imageList, newVal)
         if (newVal !== this.imageList) {
           this.imageList = newVal
         }
@@ -63,7 +62,6 @@ export default {
   methods: {
     // 删除图片
     handleRemove(file, fileList) {
-      console.log(file, fileList)
       this.imageList = this.imageList.filter(item => {
         if ((file?.name && file.name === item.name) || file?.uid && file?.uid === item?.uid) {
           return false
@@ -78,10 +76,8 @@ export default {
     },
     // 上传成功
     handleAvatarSuccess(res, file, fileList) {
-      console.log(res, file, fileList)
       if (res?.data) {
         this.imageList.push({ name: file.name, url: res.data, uid: file.uid })
-        console.log('handleAvatarSuccess', this.imageList)
         this.$emit('changeList', this.imageList)
       } else {
         let len = fileList.length
@@ -93,7 +89,6 @@ export default {
     beforeAvatarUpload(file) {
       // debugger
       let type = file.type.toLowerCase()
-      console.log(type)
       if (!/(?:jpg|gif|png|jpeg|webp)$/i.test(type)) {
         this.$message.error('只允许上传jpg|gif|png|jpeg|webp格式的图片')
         return false

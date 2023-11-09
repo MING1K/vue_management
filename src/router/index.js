@@ -3,9 +3,6 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-/* Layout */
-import Layout from '@/layout'
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -51,12 +48,12 @@ export const constantRoutes = [
 
   {
     path: '/',
-    component: Layout,
+    component: () => import('@/layout/index.vue'),
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
+      component: () => import('@/views/dashboard/index.vue'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
   }
@@ -73,6 +70,11 @@ const createRouter = () => new Router({
 })
 
 const router = createRouter()
+
+// router.$addRoutes = function(params) {
+//   router.matcher = new Router({ mode: 'history' }).matcher
+//   router.addRoutes(params)
+// }
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
@@ -182,4 +184,4 @@ export default router
 //       meta: { title: 'External Link', icon: 'link' }
 //     }
 //   ]
-// },
+// }

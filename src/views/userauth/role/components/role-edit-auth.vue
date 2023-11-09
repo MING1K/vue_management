@@ -113,7 +113,7 @@ export default {
     handleSave() {
       this.$refs.form.validate(async(valid) => {
         if (valid) {
-          let checked = this.$refs.eltree.getCheckedKeys()
+          let checked = [...this.$refs.eltree.getHalfCheckedKeys(), ...this.$refs.eltree.getCheckedKeys()]
           let data = {
             roleId: this.form.id,
             permissionId: checked.join(',')
@@ -138,7 +138,6 @@ export default {
     // 获取角色信息
     async initRolesAuth(id) {
       await this.$API.permission.toAssign(id).then(res => {
-        console.log(res)
         this.selectData = res.data.children
         let ids = (utils.tree2Array(res.data)).filter(item => item.select === true).map(item => item.id)
         this.$nextTick(() => {

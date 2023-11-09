@@ -11,7 +11,7 @@
         </div>
         <div class="input-search">
           <el-button
-            v-show="viewChange === 'table' && selectCategory.category3Id"
+            v-show="hasAddSpuPermission && viewChange === 'table' && selectCategory.category3Id"
             type="primary"
             icon="el-icon-plus"
             @click="handleAdd"
@@ -30,6 +30,7 @@
       >
         <template slot="operate" slot-scope="{ row, $index }">
           <el-button
+            v-show="hasAddSkuPermission"
             type="success"
             size="mini"
             icon="el-icon-plus"
@@ -37,6 +38,7 @@
             @click="handleAddSku(row, $index)"
           />
           <el-button
+            v-show="hasEditSpuPermission"
             type="warning"
             size="mini"
             icon="el-icon-edit"
@@ -44,12 +46,14 @@
             @click="handleEdit(row, $index)"
           />
           <el-button
+            v-show="hasViewSkuPermission"
             size="mini"
             icon="el-icon-info"
             title="查看当前spu的sku列表"
             @click="handleViewSkuList(row, $index)"
           />
           <el-button
+            v-show="hasDeleteSpuPermission"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -88,6 +92,8 @@ import spuEditView from './components/spu-edit-view.vue'
 import skuEditView from './components/sku-edit-view.vue'
 import spuSelectTable from './components/spu-select-table.vue'
 import skuDialogView from './components/sku-dialog-view.vue'
+import { hasPermission } from '@/api/auth'
+
 export default {
   components: { spuEditView, skuEditView, spuSelectTable, skuDialogView },
   data() {
@@ -130,6 +136,26 @@ export default {
     },
     searchParams() {
       return { ...this.selectCategory }
+    },
+    // 新增Spu按钮
+    hasAddSpuPermission() {
+      return hasPermission('btn.Spu.add')
+    },
+    // 新增Sku按钮
+    hasAddSkuPermission() {
+      return hasPermission('btn.Spu.addsku')
+    },
+    // 编辑按钮
+    hasEditSpuPermission() {
+      return hasPermission('btn.Spu.update')
+    },
+    // 查看sku列表按钮
+    hasViewSkuPermission() {
+      return hasPermission('btn.Spu.skus')
+    },
+    // 删除按钮
+    hasDeleteSpuPermission() {
+      return hasPermission('btn.Spu.delete')
     }
   },
   methods: {

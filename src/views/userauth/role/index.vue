@@ -4,12 +4,14 @@
       <div slot="top" class="header-row-view top-view">
         <div class="left-btns">
           <el-button
+            v-show="hasAddPermission"
             type="primary"
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
           >添加</el-button>
           <el-button
+            v-show="hasDeletePermission"
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -36,6 +38,7 @@
       >
         <template slot="operate" slot-scope="{ row, $index }">
           <el-button
+            v-show="hasRolePermission"
             type="info"
             size="mini"
             icon="el-icon-setting"
@@ -43,6 +46,7 @@
             @click="handleEditRoles(row, $index)"
           />
           <el-button
+            v-show="hasEditPermission"
             type="warning"
             size="mini"
             icon="el-icon-edit"
@@ -50,6 +54,7 @@
             @click="handleEdit(row, $index)"
           />
           <el-button
+            v-show="hasDeletePermission"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -79,6 +84,8 @@ import utils from '@/utils/utils'
 import userauthSelectTable from '../components/userauth-select-table.vue'
 import roleEditDialog from './components/role-edit-dialog.vue'
 import roleEditAuth from './components/role-edit-auth.vue'
+import { hasPermission } from '@/api/auth'
+
 export default {
   components: { userauthSelectTable, roleEditDialog, roleEditAuth },
   data() {
@@ -106,7 +113,7 @@ export default {
         visible: false,
         editParams: null,
         handleType: 'add'
-      },
+      }
     }
   },
   computed: {
@@ -117,6 +124,22 @@ export default {
       return {
         roleName: this.searchRoleName === '' ? undefined : this.searchRoleName
       }
+    },
+    // 新增按钮
+    hasAddPermission() {
+      return hasPermission('btn.Role.add')
+    },
+    // 编辑按钮
+    hasEditPermission() {
+      return hasPermission('btn.Role.update')
+    },
+    // 分配权限
+    hasRolePermission() {
+      return hasPermission('btn.Role.assgin')
+    },
+    // 删除按钮
+    hasDeletePermission() {
+      return hasPermission('btn.Role.remove')
     }
   },
   methods: {
@@ -132,7 +155,6 @@ export default {
     },
     // 获取选中角色
     selectionChange(selection) {
-      console.log(selection)
       this.ids = selection.map(item => {
         return item.id
       })
@@ -210,7 +232,7 @@ export default {
       this.roleEditAuth.visible = false
       if (res === 'add') this.initTable(1)
       else if (res === 'edit') this.initTable() // 留在当前页
-    },
+    }
   }
 }
 </script>

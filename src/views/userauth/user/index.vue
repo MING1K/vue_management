@@ -4,12 +4,14 @@
       <div slot="top" class="header-row-view top-view">
         <div class="left-btns">
           <el-button
+            v-show="hasAddPermission"
             type="primary"
             icon="el-icon-plus"
             size="mini"
             @click="handleAdd"
           >添加</el-button>
           <el-button
+            v-show="hasDeletePermission"
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -36,6 +38,7 @@
       >
         <template slot="operate" slot-scope="{ row, $index }">
           <el-button
+            v-show="hasRolePermission"
             type="info"
             size="mini"
             icon="el-icon-setting"
@@ -43,6 +46,7 @@
             @click="handleEditRoles(row, $index)"
           />
           <el-button
+            v-show="hasEditPermission"
             type="warning"
             size="mini"
             icon="el-icon-edit"
@@ -50,6 +54,7 @@
             @click="handleEdit(row, $index)"
           />
           <el-button
+            v-show="hasDeletePermission"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -79,6 +84,8 @@ import utils from '@/utils/utils'
 import userauthSelectTable from '../components/userauth-select-table.vue'
 import userEditDialog from './components/user-edit-dialog.vue'
 import userEditRole from './components/user-edit-role.vue'
+import { hasPermission } from '@/api/auth'
+
 export default {
   components: { userauthSelectTable, userEditDialog, userEditRole },
   data() {
@@ -119,6 +126,22 @@ export default {
       return {
         username: this.searchUserName === '' ? undefined : this.searchUserName
       }
+    },
+    // 新增按钮
+    hasAddPermission() {
+      return hasPermission('btn.User.add')
+    },
+    // 编辑按钮
+    hasEditPermission() {
+      return hasPermission('btn.User.update')
+    },
+    // 角色授权
+    hasRolePermission() {
+      return hasPermission('btn.User.assgin')
+    },
+    // 删除按钮
+    hasDeletePermission() {
+      return hasPermission('btn.User.remove')
     }
   },
   methods: {
@@ -134,7 +157,6 @@ export default {
     },
     // 获取选中用户
     selectionChange(selection) {
-      console.log(selection)
       this.ids = selection.map(item => {
         return item.id
       })

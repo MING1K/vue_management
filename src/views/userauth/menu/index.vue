@@ -4,6 +4,7 @@
       <div slot="top" class="header-row-view top-view">
         <div class="left-btns">
           <el-button
+            v-show="hasAddPermission"
             type="primary"
             icon="el-icon-plus"
             size="mini"
@@ -21,7 +22,7 @@
       >
         <template slot="operate" slot-scope="{ row, $index }">
           <el-button
-            v-if="row.level < 4"
+            v-if="row.level < 4 && hasAddPermission"
             type="success"
             size="mini"
             icon="el-icon-circle-plus"
@@ -29,6 +30,7 @@
             @click="handleAddChildMenu(row, $index)"
           />
           <el-button
+            v-show="hasEditPermission"
             type="warning"
             size="mini"
             icon="el-icon-edit"
@@ -36,6 +38,7 @@
             @click="handleEdit(row, $index)"
           />
           <el-button
+            v-show="hasDeletePermission"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -59,6 +62,8 @@
 import utils from '@/utils/utils'
 import permissionSelectTable from '../components/permission-select-table.vue'
 import permissionEditDialog from './components/permission-edit-dialog.vue'
+import { hasPermission } from '@/api/auth'
+
 export default {
   components: { permissionSelectTable, permissionEditDialog },
   data() {
@@ -94,6 +99,18 @@ export default {
       return {
         roleName: this.searchRoleName === '' ? undefined : this.searchRoleName
       }
+    },
+    // 新增按钮
+    hasAddPermission() {
+      return hasPermission('btn.Permission.add')
+    },
+    // 编辑按钮
+    hasEditPermission() {
+      return hasPermission('btn.Permission.update')
+    },
+    // 删除按钮
+    hasDeletePermission() {
+      return hasPermission('btn.Permission.remove')
     }
   },
   methods: {
@@ -104,7 +121,6 @@ export default {
     },
     // 获取选中菜单
     selectionChange(selection) {
-      console.log(selection)
       this.ids = selection.map(item => {
         return item.id
       })

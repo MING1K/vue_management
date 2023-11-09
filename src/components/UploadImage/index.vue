@@ -46,7 +46,6 @@ export default {
     // 上传前
     beforeAvatarUpload(file) {
       let type = file.type.toLowerCase()
-      console.log(type)
       if (!/(?:jpg|gif|png|jpeg|webp)$/i.test(type)) {
         this.$message.error('只允许上传jpg|gif|png|jpeg|webp格式的图片')
         return false

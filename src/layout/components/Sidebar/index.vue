@@ -23,6 +23,7 @@ import { mapGetters, mapState } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import { storageHelper } from '@/utils/auth'
 
 export default {
   components: { SidebarItem, Logo },
@@ -33,8 +34,10 @@ export default {
     ...mapState('user', ['allRoutes']),
     routes() {
       // sidebar遍历的应该是过滤后的路由
+      return storageHelper.getMenus()
+      // options是传递给vuerouter构造函数的对象，之后没有修改（也就是vue实例化时在router.js中定义的那些路由），
+      // 所以通过动态添加的路由是不会显示在options.routes中的，Vue就是这么设计的,要么就手动修改 this.router.options.routes = routes
       // return this.$router.options.routes
-      return this.allRoutes
     },
     activeMenu() {
       const route = this.$route

@@ -3,6 +3,7 @@
     <tb-layout>
       <div slot="top" class="top-view">
         <el-button
+          v-show="hasAddPermission"
           type="primary"
           icon="el-icon-plus"
           @click="handleAdd"
@@ -28,12 +29,14 @@
         </template>
         <template slot="operate" slot-scope="{ row, $index }">
           <el-button
+            v-show="hasEditPermission"
             type="warning"
             size="mini"
             icon="el-icon-edit"
             @click="handleEdit(row, $index)"
           >修改</el-button>
           <el-button
+            v-show="hasDeletePermission"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -55,6 +58,8 @@
 import utils from '@/utils/utils'
 import tradeMarkTable from './components/trade-mark-table.vue'
 import tradeMarkEdit from './components/trade-mark-edit.vue'
+import { hasPermission } from '@/api/auth'
+
 export default {
   components: { tradeMarkEdit, tradeMarkTable },
   data() {
@@ -76,6 +81,18 @@ export default {
   computed: {
     getTableData() {
       return this.$API.product.getTradeMarkList
+    },
+    // 新增按钮
+    hasAddPermission() {
+      return hasPermission('btn.Trademark.add')
+    },
+    // 编辑按钮
+    hasEditPermission() {
+      return hasPermission('btn.Trademark.update')
+    },
+    // 删除按钮
+    hasDeletePermission() {
+      return hasPermission('btn.Trademark.remove')
     }
   },
   methods: {

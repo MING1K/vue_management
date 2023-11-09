@@ -21,6 +21,7 @@
         <template slot="operate" slot-scope="{ row, $index }">
           <!-- 上架下架 -->
           <el-button
+            v-show="hasChangePermission"
             :type="(row.isSale === '1' || row.isSale === 1) ? 'success' : 'info'"
             :icon="
               (row.isSale === '1' || row.isSale === 1)
@@ -32,6 +33,7 @@
           />
           <!-- 编辑 -->
           <el-button
+            v-show="hasEditPermission"
             type="primary"
             icon="el-icon-edit"
             size="mini"
@@ -39,6 +41,7 @@
           />
           <!-- 查看信息 -->
           <el-button
+            v-show="hasViewPermission"
             type="info"
             icon="el-icon-info"
             size="mini"
@@ -47,6 +50,7 @@
           <!-- 删除 -->
           <el-popconfirm style="margin-left: 20px;" :title="`确定删除 ${row.skuName} 吗？`" @onConfirm="handleDelete(row, $index)">
             <el-button
+              v-show="hasDeletePermission"
               slot="reference"
               type="danger"
               size="mini"
@@ -76,6 +80,8 @@ import utils from '@/utils/utils'
 import skuSelectTable from './components/sku-select-table.vue'
 import skuViewDrawer from './components/sku-view-drawer.vue'
 import skuEditView from './components/sku-edit-dialog.vue'
+import { hasPermission } from '@/api/auth'
+
 export default {
   components: { skuSelectTable, skuViewDrawer, skuEditView },
   props: {},
@@ -113,6 +119,22 @@ export default {
     },
     searchParams() {
       return {}
+    },
+    // 上架下架按钮
+    hasChangePermission() {
+      return hasPermission('btn.Sku.updown')
+    },
+    // 编辑按钮
+    hasEditPermission() {
+      return hasPermission('btn.Sku.update')
+    },
+    // 查看按钮
+    hasViewPermission() {
+      return hasPermission('btn.Sku.detail')
+    },
+    // 删除按钮
+    hasDeletePermission() {
+      return hasPermission('btn.Sku.remove')
     }
   },
   watch: {},
@@ -151,7 +173,6 @@ export default {
       let data = await this.$API.sku.getSkuInfoBySkuId(row.id).then(res => {
         return res?.data || {}
       })
-      console.log(data)
       this.skuViewDrawer.editParams = utils.clone(data)
       this.skuViewDrawer.handleType = 'view'
       this.skuViewDrawer.visible = true

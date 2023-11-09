@@ -234,7 +234,6 @@ export default {
       let hasAttr = (this.form?.spuSaleAttrList || []).map(item => {
         return item.saleAttrName
       })
-      console.log(hasAttr, this.spuSaleAttr)
       return this.spuSaleAttr.filter(item => (hasAttr.indexOf(item.name) === -1))
     }
   },
@@ -253,7 +252,6 @@ export default {
     },
     // 添加售卖属性
     handleAddAttr() {
-      console.log(this.saleAttr)
       let saleAttrItem = this.spuSaleAttr.find(item => item.id === this.saleAttr)
       let obj = {
         baseSaleAttrId: this.saleAttr,
@@ -325,7 +323,6 @@ export default {
       row.inputVisible = false
     },
     handleSave() {
-      console.log(this.form)
       this.$refs.form.validate(async(valid) => {
         if (valid) {
           let data = utils.clone(this.form)
@@ -342,14 +339,12 @@ export default {
           })
           if (this.handleType === 'edit') {
             // data.spuSaleAttrList = data.spuSaleAttrList.filter((item) => !item.id)
-            console.log(data)
             this.$API.spu.updateSpuInfo(data).then((res) => {
               this.$message.success('编辑SPU信息成功！')
               this.handleClose('edit')
             })
           } else if (this.handleType === 'add') {
             this.$API.spu.addSpuInfo(data).then((res) => {
-              console.log(res)
               this.$message.success('增加SPU信息成功！')
               this.handleClose('add')
             })

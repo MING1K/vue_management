@@ -88,7 +88,6 @@ export default {
       this.$emit('closedialog', res)
     },
     async init() {
-      console.log(this.editParams)
       let { id, spuName, category3Id } = this.editParams
       this.spuId = id
       this.spuName = spuName

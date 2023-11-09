@@ -280,7 +280,6 @@ export default {
       this.defaultImgId = row.id
     },
     handleSave() {
-      console.log(this.form)
       let data = utils.clone(this.form)
       // 图片
       data.skuImageList = this.skuImageForm.map((item) => {
@@ -331,7 +330,6 @@ export default {
           }
         })
         .filter((item) => item)
-      console.log(data)
       this.$API.sku.addSkuInfo(data).then((res) => {
         this.$message.success('新增SKU信息成功！')
         this.handleClose('add')
@@ -375,7 +373,6 @@ export default {
       if (this.handleType === 'edit') {
         this.form = { ...this.editParams }
         this.form = utils.clone(this.editParams)
-        console.log(this.form)
         // try {
         //   let data = utils.clone(this.editParams)
         //   let { id, spuName, tmId, category3Id, description } = { ...data }
@@ -415,7 +412,7 @@ export default {
         })
         await Promise.allSettled([result1, result2, result3]).then(
           ([res1, res2, res3]) => {
-            console.log(res1, res2, res3)
+            // console.log(res1, res2, res3)
             this.skuImageList = (res1?.value?.data || []).map((item) => {
               // 图片列表
               if (!item?.isDefault) item.isDefault = 0

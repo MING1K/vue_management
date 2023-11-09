@@ -1,14 +1,13 @@
 /* eslint-disable new-cap */
 import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { storageHelper } from '@/utils/auth'
 import { resetRouter, constantRoutes, anyRoutes } from '@/router/index.js'
-import router from '@/router/index.js'
 import { asyncRoutes } from '@/router/asyncRoutes.js'
 
 const getDefaultState = () => {
   return {
     // 获取token
-    token: getToken(),
+    token: storageHelper.getToken(),
     // 存储用户名
     name: '',
     // 存储用户头像
@@ -31,6 +30,7 @@ const state = getDefaultState()
 const mutations = {
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
+    storageHelper.clear() // 清除sessionStorage
   },
   SET_TOKEN: (state, token) => {
     state.token = token
@@ -52,11 +52,12 @@ const mutations = {
     state.buttons = userInfo.buttons
     // 按钮权限
     state.roles = userInfo.roles
+    storageHelper.setUserInfo(userInfo)
   },
   SET_FILTERMENU: (state, filterMenu) => {
     state.filterMenu = filterMenu
     state.allRoutes = constantRoutes.concat(state.filterMenu, anyRoutes)
-    router.addRoutes(state.allRoutes)
+    storageHelper.setMenus(state.allRoutes)
   }
 }
 
@@ -67,7 +68,7 @@ const actions = {
     // let result = login({ username: username.trim(), password });
     // if (result.code === 200) {
     //   commit('SET_TOKEN', result.data.token);
-    //   setToken(result.data.token);
+    //   storageHelper.setToken(result.data.token);
     //   return 'ok';
     // } else {
     //   return new Promise.reject(new Error('fail'));
@@ -76,7 +77,7 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        storageHelper.setToken(data.token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -89,7 +90,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         // 返回用户名name，用户头像avatar，routes标志不同用户应该展示哪些菜单，roles用户角色，buttons按钮权限
-        console.log(response.data)
+        // console.log(response.data)
 
         const { data } = response
 
@@ -102,8 +103,11 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_USERINFO', data)
-        commit('SET_FILTERMENU', filterMenus(asyncRoutes, data.routes))
-        resolve(data)
+
+        let menuList = filterMenus(asyncRoutes, data.routes)
+        commit('SET_FILTERMENU', menuList)
+
+        resolve(menuList)
       }).catch(error => {
         reject(error)
       })
@@ -114,7 +118,7 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
-        removeToken() // must remove  token  first
+        storageHelper.removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
         resolve()
@@ -127,7 +131,7 @@ const actions = {
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
-      removeToken() // must remove  token  first
+      storageHelper.removeToken() // must remove  token  first
       commit('RESET_STATE')
       resolve()
     })
@@ -136,7 +140,6 @@ const actions = {
 
 // 过滤
 const filterMenus = (asyncRoutes, routes) => {
-  console.log(asyncRoutes, routes)
   return asyncRoutes.filter(item => {
     if (routes.indexOf(item.name) !== -1) {
       if (item.children && item.children.length > 0) {

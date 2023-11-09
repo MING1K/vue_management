@@ -107,7 +107,7 @@ export default {
     },
     // 选择父级
     handleChooseParent(row) {
-      console.log(row)
+      // console.log(row)
       // this.form.level = row.level + 1
     },
     // 新增菜单或编辑菜单
@@ -151,7 +151,6 @@ export default {
         this.parentList.filter(item => item.id === pid)
         this.form = { ...this.editParams }
       } else {
-        console.log(this.autoParams, this.autoParams?.id)
         if (!this.autoParams) {
           this.initList() // 加载父级数据
         } else {
@@ -159,7 +158,6 @@ export default {
           this.parentList.push({ id: id, name: name, level: level }) // 父级列表
           this.form.pid = id
           this.form.level = level + 1
-          console.log(this.parentList)
         }
       }
     }

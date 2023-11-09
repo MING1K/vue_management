@@ -11,7 +11,7 @@
         </div>
         <div class="input-search">
           <el-button
-            v-show="!attrEditView.visible && selectCategory.category3Id"
+            v-show="hasAddPermission && !attrEditView.visible && selectCategory.category3Id"
             type="primary"
             icon="el-icon-plus"
             @click="handleAdd"
@@ -41,12 +41,14 @@
         </template>
         <template slot="operate" slot-scope="{ row, $index }">
           <el-button
+            v-show="hasEditPermission"
             type="warning"
             size="mini"
             icon="el-icon-edit"
             @click="handleEdit(row, $index)"
           >修改</el-button>
           <el-button
+            v-show="hasDeletePermission"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -68,6 +70,7 @@
 <script>
 import utils from '@/utils/utils'
 import attrEditView from './components/attr-edit-view.vue'
+import { hasPermission } from '@/api/auth'
 export default {
   components: { attrEditView },
   data() {
@@ -107,6 +110,18 @@ export default {
         category2Id: this.selectCategory.category2Id,
         category3Id: this.selectCategory.category3Id
       }
+    },
+    // 添加按钮
+    hasAddPermission() {
+      return hasPermission('btn.Attr.add')
+    },
+    // 编辑按钮
+    hasEditPermission() {
+      return hasPermission('btn.Attr.update')
+    },
+    // 删除按钮
+    hasDeletePermission() {
+      return hasPermission('btn.Attr.remove')
     }
   },
   methods: {

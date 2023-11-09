@@ -1,4 +1,5 @@
 import router from './router'
+import { resetRouter } from './router'
 import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
@@ -32,9 +33,18 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo')
-
-          next()
+          // await store.dispatch('user/getInfo')
+          store.dispatch('user/getInfo').then(res => {
+            // 先重置路由，然后再添加
+            resetRouter()
+            // 重新设置路由
+            router.addRoutes(res)
+            next({ ...to, replace: true })
+          })
+          // next()
+          // 其实在路由守卫中，只有next()是放行，其他的诸如：next('/logon') 、 next(to) 或者 next({ ...to, replace: true })都不是放行，
+          // 而是：中断当前导航，执行新的导航
+          // next({ ...to, replace: true })中的replace: true只是一个设置信息，告诉VUE本次操作后，不能通过浏览器后退按钮，返回前一个路由。
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')

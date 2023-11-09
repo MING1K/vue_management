@@ -149,7 +149,7 @@ export default {
   methods: {
     // 懒加载
     load(tree, treeNode, resolve) {
-      console.log(tree, treeNode)
+      // console.log(tree, treeNode)
       resolve(tree.children)
     },
     updateTableHeight() {
@@ -166,7 +166,6 @@ export default {
           ...this.tableParams
         }).then((res) => {
           this.list = res.data.children
-          console.log(res)
           this.loading = false
         })
       }

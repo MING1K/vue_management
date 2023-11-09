@@ -159,14 +159,12 @@ export default {
       })
       if (this.handleType === 'edit') {
         // data.attrValueList = data.attrValueList.filter((item) => !item.id)
-        console.log(data)
         this.$API.product.updateAttrInfo(data).then((res) => {
           this.$message.success('编辑品牌属性成功！')
           this.handleClose('edit')
         })
       } else if (this.handleType === 'add') {
         this.$API.product.addAttrInfo(data).then((res) => {
-          console.log(res)
           this.$message.success('增加品牌属性成功！')
           this.handleClose('add')
         })
@@ -192,7 +190,6 @@ export default {
           this.$set(item, 'flag', false)
         })
         this.attrInfo.categoryId = auto?.category3Id || 0
-        console.log(data, auto)
       } else {
         let auto = utils.clone(this.autoParams)
         this.attrInfo.categoryId = auto?.category3Id || 0
